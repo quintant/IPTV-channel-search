@@ -1,6 +1,7 @@
 ﻿import npyscreen
 import os
 import time
+import wget
 from pynput.keyboard import Key, Controller
 
 
@@ -40,21 +41,24 @@ def parsem3u(infile):
 def start_vlc(gg):
     cd = "cd %PROGRAMFILES%/VideoLAN/VLC"
     v = "vlc " + gg
-    os.system('start')
-    time.sleep(1)
-    keyboard = Controller()
-    keyboard.type(cd)
-    keyboard.press(Key.enter)
-    keyboard.type(v)
-    keyboard.press(Key.enter)
-    keyboard.type("exit")
-    keyboard.press(Key.enter)
+    os.system(f"{cd}& {v} & exit")
+    #time.sleep(1)
+    #keyboard = Controller()
+    #keyboard.type(cd)
+    #keyboard.press(Key.enter)
+    #keyboard.type(v)
+    #keyboard.press(Key.enter)
+    #keyboard.type("exit")
+    #keyboard.press(Key.enter)
     quit()
 
 
 class TestApp(npyscreen.NPSApp):
     def main(self):
         m3ufile = 'playlist.m3u'
+        os.remove(m3ufile)
+        url = "https://iptv-org.github.io/iptv/index.m3u"
+        wget.download(url, m3ufile)
         playlist = parsem3u(m3ufile)
         options = []
         f = npyscreen.Form(name="IPTV channel search",)
